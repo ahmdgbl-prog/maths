@@ -90,7 +90,7 @@
         }
 
         @keyframes slowBlink {
-            0%, 100__ { opacity: 0.3; }
+            0%, 100% { opacity: 0.3; }
             50% { opacity: 1; }
         }
 
@@ -185,7 +185,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             width: 100%;
         }
 
@@ -205,20 +205,21 @@
         }
         .nav-action-btn:active { transform: scale(0.95); background: #fffdf7; }
 
+        /* الهندسة الجديدة للمسألة: توسط العناصر كاملة وسط الحاوية والصفحة */
         .math-grid { 
             display: grid; 
-            grid-template-columns: 1fr 40px; 
+            grid-template-columns: 50px 1fr; 
             align-items: center; 
             margin: 15px auto;
             max-width: 220px;
             width: 100%;
         }
         
+        /* جعل الأرقام والعوامل تتوسط عمودها تماماً */
         .digit-row {
-            grid-column: 1;
-            text-align: left;
-            padding-right: 20px;
-            font-size: clamp(3rem, 12vw, 4.5rem); 
+            grid-column: 2;
+            text-align: center;
+            font-size: clamp(3.2rem, 13vw, 4.8rem); 
             font-weight: 900; 
             line-height: 1.1;
             letter-spacing: 2px;
@@ -226,29 +227,37 @@
         .factor1 { color: var(--factor1-color); }
         .factor2 { color: var(--factor2-color); }
         
+        /* جعل علامة الضرب على اليمين (العمود الأول) متوسطة مع العامل الثاني */
         .sign { 
+            grid-column: 1; 
+            grid-row: 2; 
             font-size: 3rem; 
             color: var(--primary); 
             font-weight: bold; 
-            grid-column: 2; 
-            grid-row: 2; 
             display: flex;
             justify-content: center;
             align-items: center;
         }
         
+        /* توسيط خط الناتج ليمتد تحت العوامل وعلامة الضرب بانتظام وتوسط كامل */
         .v-line { 
             grid-column: 1 / span 2; 
             border-top: 6px solid var(--primary); 
-            margin: 10px 0; 
+            margin: 12px auto; 
             border-radius: 10px; 
+            width: 100%;
         }
         
-        .input-cell { grid-column: 1 / span 2; display: flex; justify-content: center; width: 100%; }
+        .input-cell { 
+            grid-column: 1 / span 2; 
+            display: flex; 
+            justify-content: center; 
+            width: 100%; 
+        }
         
         .digit-input { 
             width: 100%; 
-            max-width: 180px;
+            max-width: 190px;
             height: clamp(60px, 15vw, 85px); 
             font-size: clamp(2.2rem, 10vw, 3.5rem); 
             font-weight: 900; 
@@ -337,12 +346,12 @@
         @media (max-width: 600px), (max-height: 750px) {
             body { padding: 5px; }
             .app-container { padding: 15px 12px; border-width: 5px; border-radius: 22px; max-height: 98vh; max-height: 98dvh; }
-            .digit-row { font-size: 2.8rem; }
+            .digit-row { font-size: 2.9rem; }
             .digit-input { height: 58px; font-size: 2.1rem; border-width: 3px; max-width: 150px; }
             .custom-keyboard { gap: 8px; max-width: 290px; margin-top: 8px; }
             .key-btn { padding: 10px 0; font-size: 1.6rem; }
             .sign { font-size: 2.2rem; }
-            .v-line { margin: 6px 0; border-top-width: 4px; }
+            .v-line { margin: 8px auto; border-top-width: 4px; }
             .skill-title { font-size: 1.7rem; }
             .skill-subtitle { font-size: 1.1rem; margin-bottom: 15px; }
             .style-cards { margin-bottom: 15px; gap: 8px; }
@@ -350,6 +359,7 @@
             .blinking-watermark { font-size: 1.8rem; }
             .nav-action-btn { padding: 5px 10px; font-size: 0.85rem; }
             .continue-btn { font-size: 1rem; padding: 8px 20px; }
+            .math-grid { max-width: 190px; grid-template-columns: 40px 1fr; }
         }
     </style>
 </head>
@@ -403,10 +413,9 @@
                 
                 <div class="math-grid">
                     <div class="digit-row factor1" id="factor1-view">٠</div>
-                    <div></div>
                     
-                    <div class="digit-row factor2" id="factor2-view">٠</div>
                     <div class="sign">×</div>
+                    <div class="digit-row factor2" id="factor2-view">٠</div>
                     
                     <div class="v-line"></div>
                     
@@ -654,7 +663,6 @@
                 input.classList.add('wrong-box');
                 input.value = formatNum(q.ans); 
                 
-                // إضافة زر المتابعة بشكل آمن لمنع تخطي السؤال عشوائياً
                 document.getElementById('hint-area').innerHTML = `
                     <span class='error-hint'>تذكر ناتج الضرب الموضح بالأعلى!</span>
                     <button class='continue-btn' onclick='nextQuest()'>السؤال التالي ➡️</button>
